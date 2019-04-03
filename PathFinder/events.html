@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <style>
+    #graph-container {
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      position: absolute;
+    }
+ </style>
+</head>
+<body background='background.jpg'>
+<!-- START SIGMA IMPORTS -->
+<script src="../src/sigma.core.js"></script>
+<script src="../src/conrad.js"></script>
+<script src="../src/utils/sigma.utils.js"></script>
+<script src="../src/utils/sigma.polyfills.js"></script>
+<script src="../src/sigma.settings.js"></script>
+<script src="../src/classes/sigma.classes.dispatcher.js"></script>
+<script src="../src/classes/sigma.classes.configurable.js"></script>
+<script src="../src/classes/sigma.classes.graph.js"></script>
+<script src="../src/classes/sigma.classes.camera.js"></script>
+<script src="../src/classes/sigma.classes.quad.js"></script>
+<script src="../src/classes/sigma.classes.edgequad.js"></script>
+<script src="../src/captors/sigma.captors.mouse.js"></script>
+<script src="../src/captors/sigma.captors.touch.js"></script>
+<script src="../src/renderers/sigma.renderers.canvas.js"></script>
+<script src="../src/renderers/sigma.renderers.webgl.js"></script>
+<script src="../src/renderers/sigma.renderers.svg.js"></script>
+<script src="../src/renderers/sigma.renderers.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.nodes.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.def.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.fast.js"></script>
+<script src="../src/renderers/webgl/sigma.webgl.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.labels.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.hovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.nodes.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edges.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.def.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curve.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.arrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.edgehovers.curvedArrow.js"></script>
+<script src="../src/renderers/canvas/sigma.canvas.extremities.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.utils.js"></script>
+<script src="../src/renderers/svg/sigma.svg.nodes.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.edges.curve.js"></script>
+<script src="../src/renderers/svg/sigma.svg.labels.def.js"></script>
+<script src="../src/renderers/svg/sigma.svg.hovers.def.js"></script>
+<script src="../src/middlewares/sigma.middlewares.rescale.js"></script>
+<script src="../src/middlewares/sigma.middlewares.copy.js"></script>
+<script src="../src/misc/sigma.misc.animation.js"></script>
+<script src="../src/misc/sigma.misc.bindEvents.js"></script>
+<script src="../src/misc/sigma.misc.bindDOMEvents.js"></script>
+<script src="../src/misc/sigma.misc.drawHovers.js"></script>
+<!-- END SIGMA IMPORTS -->
+<div id="container">
+  <div id="graph-container"></div>
+  <div>
+  <p id="demo"></p>
+  </div>
+<div>
+	<h3>Choose Career Option</h3>
+	<select id = "list" onchange="getSelectValue();">
+		<option value="Acting and Modeling">Acting and Modeling</option>
+		<option value="Advertising">Advertising</option>
+		<option value="Agriculture Courses">Agriculture Courses</option>
+		<option value="BA-LLB">BA-LLB</option>
+		<option value="B.Arch">B.Arch</option>
+		<option value="B.Tech">B.Tech</option>
+		<option value="B-Pharma">B-Pharma</option>
+		<option value="Banking">Banking</option>
+		<option value="Bio-Tech">Bio-Tech</option>
+		<option value="CA">CA</option>
+		<option value="Civil services">Civil services</option>
+		<option value="Commercial Pilot">Commercial Pilot</option>
+		<option value="Dentistry">Dentistry</option>
+		<option value="Fashion Design">Fashion Design
+		<option value="Financial Management">Financial Management</option>
+		<option value="Hotel Management">Hotel Management</option>
+		<option value="Interior Design">Interior Design</option>
+		<option value="Journalism">Journalism</option>
+		<option value="MD">MD</option>
+		<option value="MBA">MBA</option>
+		<option value="MBBS">MBBS</option>
+		<option value="M.Tech">M.Tech</option>
+		<option value="Nursing">Nursing</option>
+		<option value="Political Science">Political Science</option>
+		<option value="Sociology">Sociology</option>e and Banking</h3>
+		<option value="Taxation">Taxation</option>
+		<option value="Telecommunicatons">Telecommunicatons</option>	
+	</select>
+</div>
+</div>
+<script>
+
+
+/**
+ * This example is a copy of "basic.html", but with event bindings after.
+ * Open your browser's console to see the "click", "overNode" and
+ * "outNode" events logged.
+ */
+ var selectedvalue;
+ 
+ function getSelectValue()
+	{
+		selectedvalue = document.getElementById("list").value;
+		console.log(selectedvalue);
+		//document.write(selectedvalue);
+	}
+	
+var i,
+    s,
+	j,
+	k,
+    g = {
+      nodes: [],
+      edges: []
+    };
+var node=["10th standard","12th standard","Bachelor of Journalism","Degree in mass communications and media",
+			"PG diploma in Dramatic Arts","PG Diploma in Acting","Pharmacy",
+			"Bachelor of Arts political Science","B.A. (political Science)","Master of Arts in Political science","Doctor of Philosophy in Politics",
+			"Doctor of Philosophy in International Politics","Bachelor's in Fine Art","bachelor's in sociology",
+			"Bachelors in interior design","Mtech in interior design","Interior Design","Bachelors in fashion design","Mtech in fashion design","Fashion Design",
+			"Bachelor of Surgery","Bachelor of Medicine","Doctor of Medicine degree","MBBS","MD","Dentistry","Bachelor of Dental Surgery","Master of Dental Surgery",
+			"Nursing","B.Sc Nursing course","M.Sc in nursing","B-Pharma","D.Pharma","Bachelor degree","MBA","PGDM","PGPM","Management","CFA","chartered and financial planner",
+			"Financial Management","Commercial Pilot","Student Pilot License","Private Pilot License","flying training","Hotel Management","diploma in Hotel","Bachelor in hotel",
+			"Civil Services","Agriculture","B.SC in Agri","Btech in Agri","M.SC Agri","Phd Agri","Banking","Taxation","Journalism","Advertising",
+			"Acting and Modeling","BA-LLB","Sociology","Political Science","CA","Btech","Mtech","Barch","Bio-Tech","Telecommunication","ScienceTechnology"
+			];
+var edge=[["10th standard","12th standard"],["12th standard","Bachelor of Journalism"],["12th standard","Degree in mass communications and media"],
+		["Bachelor of Journalism","Journalism"],["Degree in mass communications and media","Journalism"],
+		["Bachelor's in Fine Art","Advertising"],
+		["12th standard","PG Diploma in Acting"],["12th standard","PG diploma in Dramatic Arts"],["PG Diploma in Acting","Acting and Modeling"],["PG diploma in Dramatic Arts","Acting and Modeling"],
+		["12th standard","Bachelor of Arts political Science",],["12th standard","B.A. (political Science)"],
+		["Bachelor of Arts political Science","Master of Arts in Political science"],["B.A. (political Science)","Master of Arts in Political science"],
+		["Bachelor of Arts political Science","Doctor of Philosophy in Politics"],["B.A. (political Science)","Doctor of Philosophy in Politics"],
+		["Bachelor of Arts political Science","Doctor of Philosophy in International Politics"],["B.A. (political Science)","Doctor of Philosophy in International Politics"],
+		["Master of Arts in Political science","Political Science"],["Doctor of Philosophy in Politics","Political Science"],
+		["Doctor of Philosophy in International Politics","Political Science"],["12th standard","CA"],
+		["12th standard","Bachelor's in Fine Art"],["12th standard","bachelor's in sociology"],["12th standard","Bachelors in interior design"],
+		["Bachelors in interior design","Mtech in interior design"],["Mtech in interior design","Interior Design"],["12th standard","Bachelors in fashion design"],
+		["Bachelors in fashion design","Mtech in fashion design"],["Mtech in fashion design","Fashion Design"],["12th standard","Bachelor of Surgery"],
+		["12th standard","Bachelor of Medicine"],["Bachelor of Medicine","MD"],["Bachelor of Surgery","MD"],["12th standard","MBBS"],["12th standard","Bachelor of Dental Surgery"],
+		["Bachelor of Dental Surgery","Master of Dental Surgery"],["Master of Dental Surgery","Dentistry"],["12th standard","B.Sc Nursing course"],
+		["B.Sc Nursing course","M.Sc in nursing"],["M.Sc in nursing","Nursing"],["12th standard","B-Pharma"],["B-Pharma","D.Pharma"],
+		["D.Pharma","Pharmacy"],["12th standard","Bachelor degree"],["Bachelor degree","MBA"],["MBA","PGPM"],["MBA","PGDM"],["PGPM","Management"],["PGDM","Management"],["MBA","CFA"],
+		["CFA","chartered and financial planner"],["chartered and financial planner","Financial Management"],["12th standard","Student Pilot License"],
+		["Student Pilot License","Private Pilot License"],["Private Pilot License","flying training"],["flying training","Commercial Pilot"],["10th standard","diploma in Hotel"],
+		["diploma in Hotel","Hotel Management"],["12th standard","Bachelor in hotel"],["Bachelor in hotel","Hotel Management"],["12th standard","Bachelor degree"],
+		["Bachelor degree","Civil Services"],["12th standard","B.SC in Agri"],["B.SC in Agri","M.SC Agri"],["M.SC Agri","Agriculture"],["12th standard","Btech in Agri"],
+		["Btech in Agri","Phd Agri"],["Phd Agri","Agriculture"],["12th standard","Bachelor degree"],["Bachelor degree","Banking"],["Bachelor degree","Taxation"],
+		["12th standard","Btech"],["Btech","Mtech"],["12th standard","Barch"],["12th standard","Bio-Tech"],["12th standard","Telecommunication"],
+		["Mtech","ScienceTechnology"],["Barch","ScienceTechnology"],["Bio-Tech","ScienceTechnology"],["Telecommunication","ScienceTechnology"],["Btech","ScienceTechnology"]];
+
+for (var year=[],i=0;i<82;++i) year[i]=i%5;
+
+var prev=["Acting and Modeling"];
+for(i=0;i<68;i++){
+	if(node[i] === prev[0]){
+	g.nodes.push({id: node[i] ,label: node[i],x: Math.random(), y: Math.random(), size: 100, color: '#FFD700'});
+	}
+	else if(node[i] === "10th standard"){
+	g.nodes.push({id: node[i] ,label: node[i],x: Math.random(), y: Math.random(), size: 100, color: '#FFD700'});
+	
+	}
+	else{
+	g.nodes.push({id: node[i] ,label: node[i],x: Math.random(), y: Math.random(), size: 100, color: '#000080'});
+	}
+}
+ 
+ var cl;
+ 
+ var tyear=0;
+for(j=0;j<77;j++){
+	  if(prev.includes(edge[77-j-1][1])){
+		prev.push(edge[77-j-1][0]);
+		tyear=tyear+year[j];
+		g.edges.push({
+		id: 'e'+j,
+		label: year[j],
+		source: edge[77-j-1][0],
+		target: edge[77-j-1][1],
+		size: 4,
+		type: 'curvedArrow',
+		color: '#FFFFFF',
+		hover_color: '#000',
+
+	  });
+	  }
+	  else{
+	  g.edges.push({
+		id: 'e'+j,
+		label:year[j],
+		source: edge[77-j-1][0],
+		target: edge[77-j-1][1],
+		size: 1,
+		type: 'Arrow',
+		color: '#DC143C',
+		hover_color: '#000',
+
+	  });
+	  }
+}
+document.getElementById("demo").innerHTML = 'Total time to reach destination career'.concat(tyear.toString());
+s = new sigma({
+  graph: g,
+  renderer: {
+    container: document.getElementById('graph-container'),
+    type: 'canvas'
+  },
+  settings: {
+    doubleClickEnabled: false,
+    minEdgeSize: 0.5,
+    maxEdgeSize: 4,
+    enableEdgeHovering: true,
+    edgeHoverColor: 'edge',
+	edgeLabels: true,
+    defaultEdgeHoverColor: '#000',
+    edgeHoverSizeRatio: 1,
+    edgeHoverExtremities: true,
+  }
+});
+
+// Bind the events:
+s.bind('overNode outNode clickNode doubleClickNode rightClickNode', function(e) {
+  console.log(e.type, e.data.node.label, e.data.captor);
+});
+s.bind('overEdge outEdge clickEdge doubleClickEdge rightClickEdge', function(e) {
+  console.log(e.type, e.data.edge, e.data.captor);
+});
+s.bind('clickStage', function(e) {
+  console.log(e.type, e.data.captor);
+});
+s.bind('doubleClickStage rightClickStage', function(e) {
+  console.log(e.type, e.data.captor);
+});
+</script>
+</body>
+</html>
+

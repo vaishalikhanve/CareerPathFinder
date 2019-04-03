@@ -1,0 +1,121 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+			<style>
+			body {font-family: Arial, Helvetica, sans-serif;}
+			form {border: 3px solid #f1f1f1;}
+
+			input[type=text], input[type=password] {
+			  width: 100%;
+			  padding: 12px 20px;
+			  margin: 8px 0;
+			  display: inline-block;
+			  border: 1px solid #ccc;
+			  box-sizing: border-box;
+			}
+
+			button {
+			  background-color: #4CAF50;
+			  color: white;
+			  padding: 14px 20px;
+			  margin: 8px 0;
+			  border: none;
+			  cursor: pointer;
+			  width: 100%;
+			}
+
+			button:hover {
+			  opacity: 0.8;
+			}
+
+			.signupbtn {
+			  width: auto;
+			  padding: 10px 18px;
+			  background-color: #f44336;
+			}
+
+			.imgcontainer {
+			  text-align: center;
+			  margin: 10px 0 10px 0;
+			}
+
+			img.avatar {
+			  width: 10%;
+			  border-radius: 10%;
+			}
+
+			.container {
+			  padding: 2px;
+			  margin-left:500px;
+			  margin-right:500px;
+			}
+
+			span.psw {
+			  float: right;
+			  padding-right: 16px;
+			  padding-top: 4px;
+			}
+
+			/* Change styles for span and cancel button on extra small screens */
+			@media screen and (max-width: 300px) {
+			  span.psw {
+				 display: block;
+				 float: none;
+			  }
+			  .signupbtn {
+				 width: 50%;
+				 
+			  }
+			}
+			</style>
+  <title>Career Guru Login</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />  
+</head>
+
+<body background="background.jpg">
+<h1 style="text-align:center;">Career Guru</h1>
+
+<div class="imgcontainer">
+    <img src="img.png" alt="Avatar" class="avatar">
+</div>
+
+		  <div id="login_div" class="main-div">
+			<h3>Login</h3>
+			<input type="email" placeholder="Email..." id="email_field" />
+			<input type="password" placeholder="Password..." id="password_field" />
+           <form action="events.html">
+			<button onclick="login()">Login to Account</button>
+		   </form>
+		  </div>
+		  <div class="container" style="background-color:#f1f1f1">
+		  <form action="index2.html">
+				<button onclick="SignUp()">Sign Up</button>
+		</form>
+			<span class="psw">Forgot <a href="#">password?</a></span>
+		  </div>
+		  <div id="user_div" class="loggedin-div">
+			<h3 >Welcome User</h3>
+			<p id="user_para">Welcome to Firebase web login Example. You're currently logged in.</p>
+			<button onclick="logout()">Logout</button>
+		  </div>
+
+
+
+  <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyBY4YJUFcfhsUMGdldBnRxYB6zoe0-G4IE",
+		authDomain: "careerguru-abbbc.firebaseapp.com",
+		databaseURL: "https://careerguru-abbbc.firebaseio.com",
+		projectId: "careerguru-abbbc",
+		storageBucket: "",
+		messagingSenderId: "960843341739"
+    };
+    firebase.initializeApp(config);
+  </script>
+  <script src="index.js"></script>
+
+</body>
+</html>
